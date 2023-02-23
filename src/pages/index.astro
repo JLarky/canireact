@@ -1,5 +1,8 @@
 ---
-import SPA from './SPA.astro';
+import Layout from '../layouts/SPA-layout.astro';
+import { App } from '../qgp/solid';
 ---
 
-<SPA />
+<Layout title="Can I react to this?">
+	<App client:load url={Astro.request.url} />
+</Layout>
