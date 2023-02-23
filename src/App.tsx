@@ -1,48 +1,83 @@
-import { Router, useRoutes, A, RouteDefinition } from '@solidjs/router';
-import { createResource, createSignal, lazy } from 'solid-js';
+import { Router, useRoutes, A, RouteDefinition, useLocation } from '@solidjs/router';
+import { createMemo, createResource, createSignal, lazy } from 'solid-js';
 import solidLogo from './assets/solid.svg';
-import './App.css';
 
-const routes = [
-	// {
-	// 	path: '/users',
-	// 	component: lazy(() => import('/pages/users.js')),
-	// },
-	// {
-	// 	path: '/users/:id',
-	// 	component: lazy(() => import('/pages/users/[id].js')),
-	// 	children: [
-	// 		{ path: '/', component: lazy(() => import('/pages/users/[id]/index.js')) },
-	// 		{ path: '/settings', component: lazy(() => import('/pages/users/[id]/settings.js')) },
-	// 		{ path: '/*all', component: lazy(() => import('/pages/users/[id]/[...all].js')) },
-	// 	],
-	// },
+type Question = {
+	url: string;
+	message: string;
+	option1Url: string;
+	option1Text: string;
+	option2Url: string;
+	option2Text: string;
+};
+
+const twitterUrl = new URL('https://twitter.com/intent/tweet');
+twitterUrl.searchParams.set('text', 'Can I react to this? https://canireact.deno.dev/');
+
+const questions = [
 	{
-		path: '/',
-		component: () => <Counter />,
+		url: '/',
+		message: 'What do you want to react to?',
+		option1Url: './copyrighted/',
+		option1Text: 'Copyrighted content (movies, tv shows, etc.)',
+		option2Url: './public-domain/',
+		option2Text: 'Public domain (the bible, tweets, etc.)',
 	},
 	{
-		component: lazy(() => import('./routes/index')),
-		data: ({ params }) => {
-			console.log('loader params', params, import.meta.env.SSR);
+		url: '/copyrighted/',
+		message: 'Do you have any amount of that content in your video?',
+		option1Url: './fair-use/',
+		option1Text: 'Yes (still frame, clip, etc.)',
+		option2Url: './nothing/',
+		option2Text: 'No',
+	},
+	{
+		url: '/copyrighted/fair-use/',
+		message: 'Where is your video going to be posted?',
+		option1Url: './youtube/',
+		option1Text: 'YouTube',
+		option2Url: './twitch/',
+		option2Text: 'Twitch',
+	},
+	{
+		url: '/copyrighted/fair-use/youtube/',
+		message: 'Congratulations! You got DMCAed!',
+		option1Url: twitterUrl,
+		option1Text: 'Share this website',
+		option2Url: '/',
+		option2Text: 'Restart',
+	},
+	{
+		url: '/copyrighted/fair-use/twitch/',
+		message: 'Congratulations! You are safe! Worst case scenario, part of your video gets muted.',
+		option1Url: twitterUrl,
+		option1Text: 'Share this website',
+		option2Url: '/',
+		option2Text: 'Restart',
+	},
+	{
+		url: '/copyrighted/nothing/',
+		message:
+			'Congratulations! You are safe! You can give free promotion to the original content without any legal issues.',
+		option1Url: twitterUrl,
+		option1Text: 'Share this website',
+		option2Url: '/',
+		option2Text: 'Restart',
+	},
+	{
+		url: '/public-domain/',
+		message: "Congratulations! You are safe! You can react if there's no one who owns the content.",
+		option1Url: twitterUrl,
+		option1Text: 'Share this website',
+		option2Url: '/',
+		option2Text: 'Restart',
+	},
+] satisfies Question[];
 
-			const generator = () => 'hello';
-
-			if (0 && import.meta.env.SSR) {
-				return generator;
-			}
-
-			const [user] = createResource(
-				() => params.slug,
-				(slug) => {
-					return generator();
-				}
-			);
-
-			console.log('loader user', user);
-			return user;
-		},
+const routes = [
+	{
 		path: '/*slug',
+		component: () => <Questions />,
 	},
 ] satisfies RouteDefinition[];
 
@@ -52,27 +87,36 @@ function App() {
 	return <Routes />;
 }
 
-function Counter() {
-	const [count, setCount] = createSignal(0);
+function Questions() {
+	const x = useLocation();
+	const q = createMemo(() => {
+		const res = questions.find((q) => q.url === x.pathname);
+		console.log(res);
+		return res;
+	});
 
 	return (
-		<div class="App">
-			<div>
-				<a href="https://vitejs.dev" target="_blank">
-					<img src="/vite.svg" class="logo" alt="Vite logo" />
-				</a>
-				<a href="https://www.solidjs.com" target="_blank">
-					<img src={solidLogo} class="logo solid" alt="Solid logo" />
-				</a>
+		<div class="container mx-auto px-4 py-8">
+			<h1 class="text-4xl font-bold text-center mb-8">{q().message}</h1>
+
+			<div class="flex justify-center">
+				<div class="w-1/2 rounded-lg overflow-hidden shadow-lg bg-white mr-4">
+					<a
+						href={q().option1Url}
+						class="block w-full py-4 text-center text-xl font-bold text-blue-500 hover:bg-blue-500 hover:text-white focus:outline-none"
+					>
+						{q().option1Text}
+					</a>
+				</div>
+				<div class="w-1/2 rounded-lg overflow-hidden shadow-lg bg-white ml-4">
+					<a
+						href={q().option2Url}
+						class="block w-full py-4 text-center text-xl font-bold text-red-500 hover:bg-red-500 hover:text-white focus:outline-none"
+					>
+						{q().option2Text}
+					</a>
+				</div>
 			</div>
-			<h1>Vite + Solid</h1>
-			<div class="card">
-				<button onClick={() => setCount((count) => count + 1)}>count is {count()}</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p class="read-the-docs">Click on the Vite and Solid logos to learn more</p>
 		</div>
 	);
 }
