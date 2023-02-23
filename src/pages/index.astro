@@ -4,5 +4,5 @@ import { App } from '../qgp/solid';
 ---
 
 <Layout title="Can I react to this?">
-	<App client url={Astro.request.url} />
+	<App client:only="solid" url={Astro.request.url} />
 </Layout>
