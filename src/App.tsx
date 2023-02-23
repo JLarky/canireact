@@ -76,6 +76,10 @@ const questions = [
 
 const routes = [
 	{
+		path: '/404',
+		component: () => <div>404</div>,
+	},
+	{
 		path: '/*slug',
 		component: () => <Questions />,
 	},
