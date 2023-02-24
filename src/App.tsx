@@ -11,8 +11,9 @@ type Question = {
 	option2Text: string;
 };
 
-const twitterUrl = new URL('https://twitter.com/intent/tweet');
-twitterUrl.searchParams.set('text', 'Can I react to this? https://canireact.deno.dev/');
+const twitter = new URL('https://twitter.com/intent/tweet');
+twitter.searchParams.set('text', 'Can I react to this? https://canireact.deno.dev/');
+const twitterUrl = twitter.toString();
 
 const questions = [
 	{
@@ -101,21 +102,21 @@ function Questions() {
 
 	return (
 		<div class="container mx-auto px-4 py-8">
-			<h1 class="text-4xl font-bold text-center mb-8">{q().message}</h1>
+			<h1 class="text-4xl font-bold text-center mb-8 dark:text-gray-100">{q().message}</h1>
 
 			<div class="flex justify-center">
-				<div class="w-1/2 rounded-lg overflow-hidden shadow-lg bg-white mr-4">
+				<div class="w-1/2 rounded-lg overflow-hidden shadow-lg bg-white dark:bg-gray-800 mr-4">
 					<a
 						href={q().option1Url}
-						class="block w-full py-4 text-center text-xl font-bold text-blue-500 hover:bg-blue-500 hover:text-white focus:outline-none"
+						class="block w-full py-4 text-center text-xl font-bold text-blue-500 hover:bg-blue-500 hover:text-white focus:outline-none dark:text-blue-200 dark:hover:text-white"
 					>
 						{q().option1Text}
 					</a>
 				</div>
-				<div class="w-1/2 rounded-lg overflow-hidden shadow-lg bg-white ml-4">
+				<div class="w-1/2 rounded-lg overflow-hidden shadow-lg bg-white dark:bg-gray-800 ml-4">
 					<a
 						href={q().option2Url}
-						class="block w-full py-4 text-center text-xl font-bold text-red-500 hover:bg-red-500 hover:text-white focus:outline-none"
+						class="block w-full py-4 text-center text-xl font-bold text-purple-500 hover:bg-purple-500 hover:text-white focus:outline-none dark:text-purple-200 dark:hover:text-white"
 					>
 						{q().option2Text}
 					</a>
