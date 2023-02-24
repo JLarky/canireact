@@ -1,6 +1,5 @@
-import { Router, useRoutes, A, RouteDefinition, useLocation } from '@solidjs/router';
-import { createMemo, createResource, createSignal, lazy } from 'solid-js';
-import solidLogo from './assets/solid.svg';
+import { useRoutes, A, RouteDefinition, useLocation, AnchorProps } from '@solidjs/router';
+import { createMemo, Show } from 'solid-js';
 
 type Question = {
 	url: string;
@@ -19,25 +18,25 @@ const questions = [
 	{
 		url: '/',
 		message: 'What do you want to react to?',
-		option1Url: './copyrighted/',
+		option1Url: 'copyrighted',
 		option1Text: 'Copyrighted content (movies, tv shows, etc.)',
-		option2Url: './public-domain/',
+		option2Url: 'public-domain',
 		option2Text: 'Public domain (the bible, tweets, etc.)',
 	},
 	{
 		url: '/copyrighted/',
 		message: 'Do you have any amount of that content in your video?',
-		option1Url: './fair-use/',
+		option1Url: 'fair-use',
 		option1Text: 'Yes (still frame, clip, etc.)',
-		option2Url: './nothing/',
+		option2Url: 'nothing',
 		option2Text: 'No',
 	},
 	{
 		url: '/copyrighted/fair-use/',
 		message: 'Where is your video going to be posted?',
-		option1Url: './youtube/',
+		option1Url: 'youtube',
 		option1Text: 'YouTube',
-		option2Url: './twitch/',
+		option2Url: 'twitch',
 		option2Text: 'Twitch',
 	},
 	{
@@ -95,31 +94,40 @@ function App() {
 function Questions() {
 	const x = useLocation();
 	const q = createMemo(() => {
-		const res = questions.find((q) => q.url === x.pathname);
-		console.log(res);
+		const res = questions.find((q) => q.url === x.pathname || q.url === x.pathname + '/');
 		return res;
 	});
+	return (
+		<Show when={q()} keyed fallback={<div>404</div>}>
+			{(v) => <Question base={x.pathname} q={v} />}
+		</Show>
+	);
+}
 
+function Question(props: { base: string; q: Question }) {
+	const q = () => props.q;
 	return (
 		<div class="container mx-auto px-4 py-8">
 			<h1 class="text-4xl font-bold text-center mb-8 dark:text-gray-100">{q().message}</h1>
 
 			<div class="flex justify-center">
 				<div class="w-1/2 rounded-lg shadow-lg bg-white dark:bg-gray-800 mr-2 sm:mr-4 h-min">
-					<a
+					<Link
+						base={props.base}
 						href={q().option1Url}
 						class="block w-full px-2 py-4 text-center text-xl font-bold text-blue-500 hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-4 dark:text-blue-200 dark:hover:text-white dark:focus:ring-offset-gray-900 rounded-lg"
 					>
 						{q().option1Text}
-					</a>
+					</Link>
 				</div>
 				<div class="w-1/2 rounded-lg shadow-lg bg-white dark:bg-gray-800 ml-2 sm:ml-4 h-min">
-					<a
+					<Link
+						base={props.base}
 						href={q().option2Url}
 						class="block w-full px-2 py-4 text-center text-xl font-bold text-purple-500 hover:bg-purple-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-4 dark:text-purple-200 dark:hover:text-white dark:focus:ring-offset-gray-900 rounded-lg"
 					>
 						{q().option2Text}
-					</a>
+					</Link>
 				</div>
 			</div>
 			<div class="fixed bottom-0 right-0 p-2 flex">
@@ -141,6 +149,26 @@ function Questions() {
 				</a>
 			</div>
 		</div>
+	);
+}
+
+function Link(props: AnchorProps & { base: string }) {
+	return (
+		<Show
+			when={!props.href.startsWith('http')}
+			fallback={
+				<a target="_blank" href={props.href} children={props.children} class={props.class} />
+			}
+		>
+			<A
+				{...props}
+				href={(() => {
+					if (props.href.startsWith('/')) return props.href;
+					const baseWithTrail = props.base.endsWith('/') ? props.base : props.base + '/';
+					return baseWithTrail + props.href;
+				})()}
+			/>
+		</Show>
 	);
 }
 
