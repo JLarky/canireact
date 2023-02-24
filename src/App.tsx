@@ -11,7 +11,7 @@ type Question = {
 };
 
 const twitter = new URL('https://twitter.com/intent/tweet');
-twitter.searchParams.set('text', 'Can I react to this? https://canireact.deno.dev/');
+twitter.searchParams.set('text', 'Can I react to this? https://canireact.netlify.app/');
 const twitterUrl = twitter.toString();
 
 const questions = [
