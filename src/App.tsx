@@ -105,7 +105,7 @@ function Questions() {
 			<h1 class="text-4xl font-bold text-center mb-8 dark:text-gray-100">{q().message}</h1>
 
 			<div class="flex justify-center">
-				<div class="w-1/2 rounded-lg shadow-lg bg-white dark:bg-gray-800 mr-4 h-min">
+				<div class="w-1/2 rounded-lg shadow-lg bg-white dark:bg-gray-800 mr-2 sm:mr-4 h-min">
 					<a
 						href={q().option1Url}
 						class="block w-full px-2 py-4 text-center text-xl font-bold text-blue-500 hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-4 dark:text-blue-200 dark:hover:text-white dark:focus:ring-offset-gray-900 rounded-lg"
@@ -113,7 +113,7 @@ function Questions() {
 						{q().option1Text}
 					</a>
 				</div>
-				<div class="w-1/2 rounded-lg shadow-lg bg-white dark:bg-gray-800 ml-4 h-min">
+				<div class="w-1/2 rounded-lg shadow-lg bg-white dark:bg-gray-800 ml-2 sm:ml-4 h-min">
 					<a
 						href={q().option2Url}
 						class="block w-full px-2 py-4 text-center text-xl font-bold text-purple-500 hover:bg-purple-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-4 dark:text-purple-200 dark:hover:text-white dark:focus:ring-offset-gray-900 rounded-lg"
