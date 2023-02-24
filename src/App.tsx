@@ -105,22 +105,40 @@ function Questions() {
 			<h1 class="text-4xl font-bold text-center mb-8 dark:text-gray-100">{q().message}</h1>
 
 			<div class="flex justify-center">
-				<div class="w-1/2 rounded-lg overflow-hidden shadow-lg bg-white dark:bg-gray-800 mr-4 h-min">
+				<div class="w-1/2 rounded-lg shadow-lg bg-white dark:bg-gray-800 mr-4 h-min">
 					<a
 						href={q().option1Url}
-						class="block w-full px-2 py-4 text-center text-xl font-bold text-blue-500 hover:bg-blue-500 hover:text-white focus:outline-none dark:text-blue-200 dark:hover:text-white"
+						class="block w-full px-2 py-4 text-center text-xl font-bold text-blue-500 hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-4 dark:text-blue-200 dark:hover:text-white dark:focus:ring-offset-gray-900 rounded-lg"
 					>
 						{q().option1Text}
 					</a>
 				</div>
-				<div class="w-1/2 rounded-lg overflow-hidden shadow-lg bg-white dark:bg-gray-800 ml-4 h-min">
+				<div class="w-1/2 rounded-lg shadow-lg bg-white dark:bg-gray-800 ml-4 h-min">
 					<a
 						href={q().option2Url}
-						class="block w-full px-2 py-4 text-center text-xl font-bold text-purple-500 hover:bg-purple-500 hover:text-white focus:outline-none dark:text-purple-200 dark:hover:text-white"
+						class="block w-full px-2 py-4 text-center text-xl font-bold text-purple-500 hover:bg-purple-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-4 dark:text-purple-200 dark:hover:text-white dark:focus:ring-offset-gray-900 rounded-lg"
 					>
 						{q().option2Text}
 					</a>
 				</div>
+			</div>
+			<div class="fixed bottom-0 right-0 p-2 flex">
+				<a
+					href="https://github.com/JLarky/canireact"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="flex items-center py-2 px-4 rounded bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-offset-gray-900"
+				>
+					<span>Star on Github</span>
+				</a>
+				<a
+					href="http://qgp.app/"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="ml-2 flex items-center py-2 px-4 rounded bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-offset-gray-900"
+				>
+					<span>Built with QGP</span>
+				</a>
 			</div>
 		</div>
 	);
